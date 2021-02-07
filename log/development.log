@@ -1,0 +1,119 @@
+  [1m[35m (0.4ms)[0m  [1m[35mSET NAMES utf8,  @@SESSION.sql_mode = CONCAT(CONCAT(@@sql_mode, ',STRICT_ALL_TABLES'), ',NO_AUTO_VALUE_ON_ZERO'),  @@SESSION.sql_auto_is_null = 0, @@SESSION.wait_timeout = 2147483[0m
+  [1m[35m (183.8ms)[0m  [1m[35mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL PRIMARY KEY)[0m
+  [1m[35m (185.3ms)[0m  [1m[35mCREATE TABLE `ar_internal_metadata` (`key` varchar(255) NOT NULL PRIMARY KEY, `value` varchar(255), `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL)[0m
+  [1m[35m (0.7ms)[0m  [1m[35mSET NAMES utf8,  @@SESSION.sql_mode = CONCAT(CONCAT(@@sql_mode, ',STRICT_ALL_TABLES'), ',NO_AUTO_VALUE_ON_ZERO'),  @@SESSION.sql_auto_is_null = 0, @@SESSION.wait_timeout = 2147483[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT GET_LOCK('591015657129868215', 0)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+Migrating to DeviseCreateUsers (20210207161809)
+  [1m[35m (183.4ms)[0m  [1m[35mCREATE TABLE `users` (`id` bigint NOT NULL AUTO_INCREMENT PRIMARY KEY, `email` varchar(255) DEFAULT '' NOT NULL, `encrypted_password` varchar(255) DEFAULT '' NOT NULL, `reset_password_token` varchar(255), `reset_password_sent_at` datetime, `remember_created_at` datetime, `created_at` datetime(6) NOT NULL, `updated_at` datetime(6) NOT NULL)[0m
+  [1m[35m (160.5ms)[0m  [1m[35mCREATE UNIQUE INDEX `index_users_on_email`  ON `users` (`email`) [0m
+  [1m[35m (161.7ms)[0m  [1m[35mCREATE UNIQUE INDEX `index_users_on_reset_password_token`  ON `users` (`reset_password_token`) [0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mprimary::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO `schema_migrations` (`version`) VALUES ('20210207161809')[0m
+  [1m[35m (25.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT `ar_internal_metadata`.* FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'environment' LIMIT 1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.2ms)[0m  [1m[32mINSERT INTO `ar_internal_metadata` (`key`, `value`, `created_at`, `updated_at`) VALUES ('environment', 'development', '2021-02-07 16:18:23.347425', '2021-02-07 16:18:23.347425')[0m
+  [1m[35m (24.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT RELEASE_LOCK('591015657129868215')[0m
+  [1m[35m (0.4ms)[0m  [1m[35mSET NAMES utf8,  @@SESSION.sql_mode = CONCAT(CONCAT(@@sql_mode, ',STRICT_ALL_TABLES'), ',NO_AUTO_VALUE_ON_ZERO'),  @@SESSION.sql_auto_is_null = 0, @@SESSION.wait_timeout = 2147483[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[35mSET NAMES utf8,  @@SESSION.sql_mode = CONCAT(CONCAT(@@sql_mode, ',STRICT_ALL_TABLES'), ',NO_AUTO_VALUE_ON_ZERO'),  @@SESSION.sql_auto_is_null = 0, @@SESSION.wait_timeout = 2147483[0m
+  [1m[35m (0.2ms)[0m  [1m[35mSET NAMES utf8,  @@SESSION.sql_mode = CONCAT(CONCAT(@@sql_mode, ',STRICT_ALL_TABLES'), ',NO_AUTO_VALUE_ON_ZERO'),  @@SESSION.sql_auto_is_null = 0, @@SESSION.wait_timeout = 2147483[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT GET_LOCK('591015657129868215', 0)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+Migrating to AddAuthenticationTokenToUsers (20210207161854)
+  [1m[35m (377.2ms)[0m  [1m[35mALTER TABLE `users` ADD `authentication_token` varchar(30)[0m
+  [1m[35m (198.8ms)[0m  [1m[35mCREATE UNIQUE INDEX `index_users_on_authentication_token`  ON `users` (`authentication_token`) [0m
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mprimary::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO `schema_migrations` (`version`) VALUES ('20210207161854')[0m
+  [1m[35m (49.7ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT `ar_internal_metadata`.* FROM `ar_internal_metadata` WHERE `ar_internal_metadata`.`key` = 'environment' LIMIT 1[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT RELEASE_LOCK('591015657129868215')[0m
+  [1m[35m (0.2ms)[0m  [1m[35mSET NAMES utf8,  @@SESSION.sql_mode = CONCAT(CONCAT(@@sql_mode, ',STRICT_ALL_TABLES'), ',NO_AUTO_VALUE_ON_ZERO'),  @@SESSION.sql_auto_is_null = 0, @@SESSION.wait_timeout = 2147483[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+Started POST "/api/v1/sign_up" for ::1 at 2021-02-07 23:23:00 +0700
+  [1m[35m (0.5ms)[0m  [1m[35mSET NAMES utf8,  @@SESSION.sql_mode = CONCAT(CONCAT(@@sql_mode, ',STRICT_ALL_TABLES'), ',NO_AUTO_VALUE_ON_ZERO'),  @@SESSION.sql_auto_is_null = 0, @@SESSION.wait_timeout = 2147483[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT `schema_migrations`.`version` FROM `schema_migrations` ORDER BY `schema_migrations`.`version` ASC[0m
+Processing by Api::V1::RegistrationsController#create as JSON
+  Parameters: {"user"=>{"email"=>"ndt0123999@gmail.com", "password"=>"[FILTERED]"}}
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/registrations_controller.rb:6:in `create'
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = BINARY 'ndt0123999@gmail.com' LIMIT 1[0m
+  ↳ app/controllers/api/v1/registrations_controller.rb:6:in `create'
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `users` WHERE `users`.`authentication_token` = 'FGbmLfd3mMrByWDatauq'[0m
+  ↳ app/controllers/api/v1/registrations_controller.rb:6:in `create'
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `created_at`, `updated_at`, `authentication_token`) VALUES ('ndt0123999@gmail.com', '$2a$12$86/ubWMLoN2zSkfNhBY8qeTEu3k37uuCL7PjsSu0YZo3BPLn32imm', '2021-02-07 16:23:00.589955', '2021-02-07 16:23:00.589955', 'FGbmLfd3mMrByWDatauq')[0m
+  ↳ app/controllers/api/v1/registrations_controller.rb:6:in `create'
+  [1m[35m (26.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/registrations_controller.rb:6:in `create'
+Completed 200 OK in 383ms (Views: 1.0ms | ActiveRecord: 29.0ms | Allocations: 12230)
+
+
+Started POST "/api/v1/sign_up" for ::1 at 2021-02-07 23:24:18 +0700
+Processing by Api::V1::RegistrationsController#create as JSON
+  Parameters: {"sign_in"=>{"email"=>"ndt0123999@gmail.com", "password"=>"[FILTERED]"}}
+Filter chain halted as :ensure_params_exist rendered or redirected
+Completed 400 Bad Request in 2ms (Views: 0.3ms | ActiveRecord: 0.0ms | Allocations: 335)
+
+
+Started POST "/api/v1/sign_in" for ::1 at 2021-02-07 23:25:07 +0700
+Processing by Api::V1::SessionsController#create as JSON
+  Parameters: {"sign_in"=>{"email"=>"ndt0123999@gmail.com", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT `users`.* FROM `users` WHERE `users`.`email` = 'ndt0123999@gmail.com' ORDER BY `users`.`id` ASC LIMIT 1[0m
+  ↳ app/controllers/api/v1/sessions_controller.rb:29:in `load_user'
+Completed 200 OK in 321ms (Views: 0.4ms | ActiveRecord: 2.1ms | Allocations: 6521)
+
+
+Started POST "/api/v1/sign_in" for ::1 at 2021-02-07 23:25:17 +0700
+Processing by Api::V1::SessionsController#create as JSON
+  Parameters: {"sign_in"=>{"email"=>"ndt0123999@gmail.com", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT `users`.* FROM `users` WHERE `users`.`email` = 'ndt0123999@gmail.com' ORDER BY `users`.`id` ASC LIMIT 1[0m
+  ↳ app/controllers/api/v1/sessions_controller.rb:29:in `load_user'
+Completed 401 Unauthorized in 293ms (Views: 0.2ms | ActiveRecord: 0.3ms | Allocations: 1177)
+
+
+Started POST "/api/v1/sign_in" for ::1 at 2021-02-07 23:25:46 +0700
+Processing by Api::V1::SessionsController#create as JSON
+  Parameters: {"user"=>{"email"=>"ndt0123999@gmail.com", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT `users`.* FROM `users` WHERE `users`.`email` = 'ndt0123999@gmail.com' ORDER BY `users`.`id` ASC LIMIT 1[0m
+  ↳ app/controllers/api/v1/sessions_controller.rb:29:in `load_user'
+Completed 401 Unauthorized in 301ms (Views: 0.2ms | ActiveRecord: 1.7ms | Allocations: 6098)
+
+
+Started POST "/api/v1/sign_in" for ::1 at 2021-02-07 23:25:49 +0700
+Processing by Api::V1::SessionsController#create as JSON
+  Parameters: {"user"=>{"email"=>"ndt0123999@gmail.com", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT `users`.* FROM `users` WHERE `users`.`email` = 'ndt0123999@gmail.com' ORDER BY `users`.`id` ASC LIMIT 1[0m
+  ↳ app/controllers/api/v1/sessions_controller.rb:29:in `load_user'
+Completed 200 OK in 324ms (Views: 0.4ms | ActiveRecord: 0.4ms | Allocations: 1355)
+
+
+Started POST "/api/v1/sign_up" for ::1 at 2021-02-07 23:26:45 +0700
+Processing by Api::V1::RegistrationsController#create as JSON
+  Parameters: {"user"=>{"email"=>"ndt0123999@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}}
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/registrations_controller.rb:6:in `create'
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = BINARY 'ndt0123999@gmail.com' LIMIT 1[0m
+  ↳ app/controllers/api/v1/registrations_controller.rb:6:in `create'
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+  ↳ app/controllers/api/v1/registrations_controller.rb:6:in `create'
+Completed 422 Unprocessable Entity in 372ms (Views: 0.3ms | ActiveRecord: 2.5ms | Allocations: 12208)
+
+
+Started POST "/api/v1/sign_up" for ::1 at 2021-02-07 23:26:57 +0700
+Processing by Api::V1::RegistrationsController#create as JSON
+  Parameters: {"user"=>{"email"=>"ndt012399@gmail.com", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]"}}
+  [1m[35m (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/api/v1/registrations_controller.rb:6:in `create'
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM `users` WHERE `users`.`email` = BINARY 'ndt012399@gmail.com' LIMIT 1[0m
+  ↳ app/controllers/api/v1/registrations_controller.rb:6:in `create'
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT COUNT(*) FROM `users` WHERE `users`.`authentication_token` = '21kzjpQyGzV1Kr-3SmxN'[0m
+  ↳ app/controllers/api/v1/registrations_controller.rb:6:in `create'
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO `users` (`email`, `encrypted_password`, `created_at`, `updated_at`, `authentication_token`) VALUES ('ndt012399@gmail.com', '$2a$12$u6wyPMOZHBMFxy.1BnVDgeEI9kDto1tfF.z4DLwRm8oQg4WJi5CnW', '2021-02-07 16:26:57.417131', '2021-02-07 16:26:57.417131', '21kzjpQyGzV1Kr-3SmxN')[0m
+  ↳ app/controllers/api/v1/registrations_controller.rb:6:in `create'
+  [1m[35m (50.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/api/v1/registrations_controller.rb:6:in `create'
+Completed 200 OK in 364ms (Views: 0.6ms | ActiveRecord: 51.1ms | Allocations: 5027)
+
+
