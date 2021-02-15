@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_07_161854) do
+ActiveRecord::Schema.define(version: 2021_02_09_164528) do
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -21,6 +21,12 @@ ActiveRecord::Schema.define(version: 2021_02_07_161854) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "authentication_token", limit: 30
+    t.string "first_name", default: ""
+    t.string "last_name", default: ""
+    t.string "university", default: ""
+    t.string "phone_number", default: ""
+    t.string "address", default: ""
+    t.string "facebook", default: ""
     t.index ["authentication_token"], name: "index_users_on_authentication_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
