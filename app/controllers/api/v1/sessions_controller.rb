@@ -1,6 +1,7 @@
 class Api::V1::SessionsController < Devise::SessionsController
   before_action :sign_in_params, only: :create
   before_action :load_user, only: :create
+  skip_before_action :verify_signed_out_user
 
   # sign in
   def create
@@ -18,6 +19,12 @@ class Api::V1::SessionsController < Devise::SessionsController
         data: {}
       }, status: :unauthorized
     end
+  end
+
+  def destroy
+    render json: {
+      message: "Signed out"
+    }, status: :ok
   end
 
   private

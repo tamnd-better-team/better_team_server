@@ -6,9 +6,11 @@
 /pkg/
 /spec/reports/
 /spec/examples.txt
-/test/tmp/
-/test/version_tmp/
+/test/
+# /test/tmp/
+# /test/version_tmp/
 /tmp/
+log/development.log
 
 # Used by dotenv library to load environment variables.
 # .env
