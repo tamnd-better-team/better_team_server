@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_10_162315) do
+ActiveRecord::Schema.define(version: 2021_03_16_163747) do
 
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
     t.string "content"
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 2021_03_10_162315) do
   end
 
   create_table "workspace_members", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
-    t.string "role", default: "0"
+    t.integer "role", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "workspace_id"
@@ -82,7 +82,8 @@ ActiveRecord::Schema.define(version: 2021_03_10_162315) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "document"
-    t.boolean "is_private"
+    t.boolean "is_private", default: false
+    t.string "code"
   end
 
 end

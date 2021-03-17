@@ -17,8 +17,12 @@ Rails.application.routes.draw do
       patch "update_account", to: "account#update"
 
       # Workspace
-      resources :workspace, only: %i(index edit update create)
+      resources :workspace
       get "user_list_workspace", to: "workspace#user_list_workspace"
+      post "workspace/:workspace_id/add_members", to: "workspace#add_members"
+      post "workspace/:workspace_id/remove_members", to: "workspace#remove_members"
+      get "workspace/:workspace_id/all_users", to: "workspace#all_users"
+      get "workspace/:workspace_id/all_members", to: "workspace#all_members"
     end
   end
 end

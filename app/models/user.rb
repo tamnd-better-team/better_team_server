@@ -17,4 +17,6 @@ class User < ApplicationRecord
     length: {maximum: 20}
   validates :last_name, presence: true,
     length: {maximum: 20}
+
+  scope :by_ids, ->(user_ids){where id: user_ids}
 end

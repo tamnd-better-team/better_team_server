@@ -1,5 +1,5 @@
 class Workspace < ApplicationRecord
-  WORKSPACE_PARAMS = %i(title description).freeze
+  WORKSPACE_PARAMS = %i(title description code is_private).freeze
 
   has_many :messages
   has_many :tasks
@@ -9,5 +9,6 @@ class Workspace < ApplicationRecord
 
   validates :title, presence: true,
     length: {maximum: 40}
+  validates :code, length: {maximum: 10, minimum: 5}, allow_blank: true
   validates :description, presence: true
 end
