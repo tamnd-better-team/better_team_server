@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_16_163747) do
+ActiveRecord::Schema.define(version: 2021_03_18_160112) do
 
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
     t.string "content"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 2021_03_16_163747) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "workspace_id"
     t.integer "user_id"
+    t.integer "status", default: 0
   end
 
   create_table "workspaces", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|

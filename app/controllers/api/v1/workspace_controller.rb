@@ -89,6 +89,8 @@ class Api::V1::WorkspaceController < ApplicationController
   end
 
   # POST: Remove member
+  # post "workspace/:workspace_id/remove_members"
+  # params: user_ids: [list uset id]
   def remove_members
     workspace = Workspace.find_by(id: params[:workspace_id])
     if workspace && can_remove_members?(workspace, @current_user)
@@ -165,22 +167,22 @@ class Api::V1::WorkspaceController < ApplicationController
   end
 
   def can_add_members? workspace, user
-    workspace_member = WorkspaceMember.by_user_workspace(user.id, workspace.id)
+    workspace_member = WorkspaceMember.approved.by_user_workspace(user.id, workspace.id)
     return workspace_member.present?
   end
 
   def can_remove_members? workspace, user
-    workspace_member = WorkspaceMember.by_user_workspace(user.id, workspace.id)
+    workspace_member = WorkspaceMember.approved.by_user_workspace(user.id, workspace.id)
     return workspace_member.present?
   end
 
   def can_update_workspace? workspace, user
-    workspace_member = WorkspaceMember.by_user_workspace(user.id, workspace.id)
+    workspace_member = WorkspaceMember.approved.by_user_workspace(user.id, workspace.id)
     return workspace_member.present?
   end
 
   def can_read_workspace_info? workspace, user
-    workspace_member = WorkspaceMember.by_user_workspace(user.id, workspace.id)
+    workspace_member = WorkspaceMember.approved.by_user_workspace(user.id, workspace.id)
     return workspace_member.present?
   end
 end
