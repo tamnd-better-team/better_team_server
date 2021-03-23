@@ -18,5 +18,6 @@ class User < ApplicationRecord
   validates :last_name, presence: true,
     length: {maximum: 20}
 
+  scope :without_authen_token, ->{select(User.column_names - ["authentication_token"])}
   scope :by_ids, ->(user_ids){where id: user_ids}
 end

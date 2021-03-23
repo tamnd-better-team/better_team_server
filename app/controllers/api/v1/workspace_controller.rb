@@ -75,7 +75,7 @@ class Api::V1::WorkspaceController < ApplicationController
       params[:user_ids].map { |user_id|
         WorkspaceMember.find_or_create_by(user_id: user_id, workspace_id:params[:workspace_id])
       }
-      members = workspace.users
+      members = workspace.users.without_authen_token
       render json: {
         is_success: true,
         members: members
@@ -95,12 +95,35 @@ class Api::V1::WorkspaceController < ApplicationController
     workspace = Workspace.find_by(id: params[:workspace_id])
     if workspace && can_remove_members?(workspace, @current_user)
       params[:user_ids].map { |user_id|
-        workspace_member = WorkspaceMember.find_by(user_id: user_id, workspace_id: workspace.id)
+        workspace_member = WorkspaceMember.member.find_by(user_id: user_id, workspace_id: workspace.id)
         if workspace_member
           workspace_member.destroy
         end
       }
-      members = workspace.users
+      members = []
+      workspace.workspace_members.each do |workspace_member|
+        if workspace_member.user.id != @current_user.id
+          user = workspace_member.user
+          member_info = {
+            id: user.id,
+            email: user.email,
+            created_at: user.created_at,
+            updated_at: user.updated_at,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            university: user.university,
+            phone_number: user.phone_number,
+            address: user.address,
+            facebook: user.facebook,
+            sex: user.sex,
+            avatar: user.avatar,
+            birthday: user.birthday,
+            role: workspace_member.role,
+            status: workspace_member.status
+          }
+          members.push(member_info)
+        end
+      end
       render json: {
         is_success: true,
         members: members
@@ -114,11 +137,17 @@ class Api::V1::WorkspaceController < ApplicationController
   end
 
   # GET: all users that do not belong to this workspace
+  # get "workspace/:workspace_id/all_users"
+  # body: {search_key: ""}
   def all_users
     workspace = Workspace.find_by(id: params[:workspace_id])
+    search_key = params[:search_key] || ""
     if workspace && workspace.users.pluck(:id).include?(@current_user.id)
       member_ids = workspace.users.pluck(:id)
       all_users = User.where.not(id: member_ids)
+      if search_key.present?
+        all_users = all_users.where("email LIKE :text OR first_name LIKE :text OR last_name LIKE :text OR university LIKE :text", text: "%#{search_key}%").without_authen_token
+      end
       render json: {
         is_success: true,
         users: all_users
@@ -132,12 +161,42 @@ class Api::V1::WorkspaceController < ApplicationController
   end
 
   # GET: all members in workspace
+  # get "workspace/:workspace_id/all_members"
+  # params: {search_key: ""}
   def all_members
     workspace = Workspace.find_by(id: params[:workspace_id])
+    search_key = params[:search_key] || ""
     if workspace && workspace.users.pluck(:id).include?(@current_user.id)
-      member_ids = workspace.users.pluck(:id)
-      member_ids.delete(@current_user.id)
-      members = User.where(id: member_ids)
+      members = []
+      users = if search_key.present?
+        workspace.users.where("email LIKE :text OR first_name LIKE :text OR last_name LIKE :text OR university LIKE :text", text: "%#{search_key}%")
+      else
+        workspace.users
+      end
+      users.each do |user|
+        if user.id != @current_user.id
+          workspace_member = user.workspace_members.find_by(workspace_id: workspace.id)
+          member_info = {
+            id: user.id,
+            email: user.email,
+            created_at: user.created_at,
+            updated_at: user.updated_at,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            university: user.university,
+            phone_number: user.phone_number,
+            address: user.address,
+            facebook: user.facebook,
+            sex: user.sex,
+            avatar: user.avatar,
+            birthday: user.birthday,
+            role: workspace_member.role,
+            status: workspace_member.status
+          }
+          members.push(member_info)
+        end
+      end
+
       render json: {
         is_success: true,
         members: members
