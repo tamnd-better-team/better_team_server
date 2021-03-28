@@ -1,15 +1,23 @@
 class Task < ApplicationRecord
-  belongs_to :user
+  TASK_PARAMS = %i(completion priority start_date due_date title description type status percentage_completed workspace_id created_user_id assigned_user_id).freeze
+
+  LIMIT_TASK_PER_PAGE = 5
+
   belongs_to :workspace
   has_many :task_comments
 
-  enum completion: {normal: 0, at_risk: 1, on_track: 2, excellent: 3}
-  enum priority: {low: 0, medium: 1, high: 2}
-  enum status: {new: 0, inprogress: 1, done: 2}
+  # enum completion: {normal: 0, at_risk: 1, on_track: 2, excellent: 3}
+  enum priority: {low: 0, normal: 1, high: 2}
+  enum status: {pending: 0, in_progress: 1, finished: 2, deleted: 3}
 
   validates :title, presence: true,
     length: {maximum: 100}
   validates :description, presence: true
   validates :priority, presence: true
   validates :status, presence: true
+  validates :due_date, presence: true
+
+  scope :order_updated_at_desc, ->{order(updated_at: :desc)}
+  scope :order_created_at_desc, ->{order(created_at: :desc)}
+  scope :by_status, ->(status){where status: status}
 end

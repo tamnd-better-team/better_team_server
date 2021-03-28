@@ -23,6 +23,13 @@ Rails.application.routes.draw do
       post "workspace/:workspace_id/remove_members", to: "workspace#remove_members"
       get "workspace/:workspace_id/all_users", to: "workspace#all_users"
       get "workspace/:workspace_id/all_members", to: "workspace#all_members"
+
+      # Task
+      post "workspace/:workspace_id/new_task", to: "task#create"  #Create task for workspace
+      get "workspace/:workspace_id/pending_tasks_list", to: "task#pending_tasks_list"
+      get "workspace/:workspace_id/in_progress_tasks_list", to: "task#in_progress_tasks_list"
+      get "workspace/:workspace_id/finished_tasks_list", to: "task#finished_tasks_list"
+      get "task/:task_id/detail", to: "task#detail"
     end
   end
 end

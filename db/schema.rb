@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_18_160112) do
+ActiveRecord::Schema.define(version: 2021_03_28_070304) do
 
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
     t.string "content"
@@ -28,21 +28,29 @@ ActiveRecord::Schema.define(version: 2021_03_18_160112) do
     t.integer "user_id"
   end
 
+  create_table "task_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "task_id"
+    t.string "field"
+    t.string "value_before"
+    t.string "value_after"
+  end
+
   create_table "tasks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
-    t.integer "completion", default: 0
     t.integer "priority", default: 0
     t.date "start_date"
     t.date "due_date"
     t.string "title"
-    t.string "description"
+    t.string "description", limit: 5000
     t.string "type"
     t.integer "status", default: 0
-    t.integer "percentage_completed"
+    t.integer "percentage_completed", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "workspace_id"
     t.integer "created_user_id"
     t.integer "assigned_user_id"
+    t.string "label"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|

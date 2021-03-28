@@ -69,6 +69,8 @@ class Api::V1::WorkspaceController < ApplicationController
   end
 
   # POST: Add new members to workspace
+  # post "workspace/:workspace_id/add_members"
+  # data: {user_ids: []}
   def add_members
     workspace = Workspace.find_by(id: params[:workspace_id])
     if workspace && can_add_members?(workspace, @current_user)
