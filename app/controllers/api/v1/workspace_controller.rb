@@ -162,7 +162,7 @@ class Api::V1::WorkspaceController < ApplicationController
     end
   end
 
-  # GET: all members in workspace
+  # GET: all members in workspace except current user
   # get "workspace/:workspace_id/all_members"
   # params: {search_key: ""}
   def all_members

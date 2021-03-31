@@ -98,15 +98,6 @@ class Api::V1::TaskController < ApplicationController
     if task && can_access_task?(task.workspace, @current_user)
       assigned_user = User.find_by(id: task.assigned_user_id)
       created_user = User.find_by(id: task.created_user_id)
-      # status = if task.status == "pending"
-      #   "Pending"
-      # elsif task.status == "in_progress"
-      #   "In Progress"
-      # elsif task.status == "finished"
-      #   "Finished"
-      # else
-      #   "Deleted"
-      # end
       task_detail = {
         id: task.id,
         priority: task.priority,
@@ -118,6 +109,9 @@ class Api::V1::TaskController < ApplicationController
         percentage_completed: task.percentage_completed,
         created_at: task.created_at,
         updated_at: task.updated_at,
+        workspace_id: task.workspace_id,
+        created_user_id: task.created_user_id,
+        assigned_user_id: task.assigned_user_id,
         label: task.label,
         assigned_user_name: assigned_user ? assigned_user.first_name + " " + assigned_user.last_name : "",
         created_user_name: created_user ? created_user.first_name + " " + created_user.last_name : ""
