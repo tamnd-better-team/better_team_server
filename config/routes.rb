@@ -26,10 +26,12 @@ Rails.application.routes.draw do
 
       # Task
       post "workspace/:workspace_id/new_task", to: "task#create"  #Create task for workspace
+      post "task/:task_id", to: "task#update"
       get "workspace/:workspace_id/pending_tasks_list", to: "task#pending_tasks_list"
       get "workspace/:workspace_id/in_progress_tasks_list", to: "task#in_progress_tasks_list"
       get "workspace/:workspace_id/finished_tasks_list", to: "task#finished_tasks_list"
       get "task/:task_id/detail", to: "task#detail"
+      get "task/:task_id/task_history", to: "task#task_history"
     end
   end
 end

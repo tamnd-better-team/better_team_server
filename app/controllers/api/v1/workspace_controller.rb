@@ -164,7 +164,8 @@ class Api::V1::WorkspaceController < ApplicationController
 
   # GET: all members in workspace except current user
   # get "workspace/:workspace_id/all_members"
-  # params: {search_key: ""}
+  # params: {search_key: "", all: Boolean}
+  # If params[:all] == true -> Get all member include current user
   def all_members
     workspace = Workspace.find_by(id: params[:workspace_id])
     search_key = params[:search_key] || ""
@@ -176,7 +177,7 @@ class Api::V1::WorkspaceController < ApplicationController
         workspace.users
       end
       users.each do |user|
-        if user.id != @current_user.id
+        if user.id != @current_user.id || params[:all]
           workspace_member = user.workspace_members.find_by(workspace_id: workspace.id)
           member_info = {
             id: user.id,

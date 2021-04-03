@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_28_070304) do
+ActiveRecord::Schema.define(version: 2021_04_03_163914) do
 
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
     t.string "content"
@@ -34,6 +34,13 @@ ActiveRecord::Schema.define(version: 2021_03_28_070304) do
     t.string "field"
     t.string "value_before"
     t.string "value_after"
+    t.datetime "created_at"
+  end
+
+  create_table "task_labels", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
+    t.integer "task_id"
+    t.string "color"
+    t.string "text"
   end
 
   create_table "tasks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|

@@ -1,10 +1,38 @@
 class Task < ApplicationRecord
   TASK_PARAMS = %i(completion priority start_date due_date title description type status percentage_completed workspace_id created_user_id assigned_user_id).freeze
 
+  FIELDS = {
+    completion: "Completion",
+    priority: "Priority",
+    start_date: "Start Date",
+    due_date: "Due Date",
+    title: "Title",
+    description: "Description",
+    type: "Type",
+    status: "Status",
+    percentage_completed: "Percentage Completed",
+    assigned_user_id: "Assigned"
+  }
+
+  PRIORITY_CD =  {
+    low: "Low",
+    normal: "Normal",
+    high: "High"
+  }
+
+  STATUS_CD = {
+    pending: "Pending",
+    in_progress: "In Progress",
+    finished: "Finished",
+    deleted: "Deleted"
+  }
+
   LIMIT_TASK_PER_PAGE = 5
 
   belongs_to :workspace
   has_many :task_comments
+  has_many :task_labels
+  has_many :task_history
 
   # enum completion: {normal: 0, at_risk: 1, on_track: 2, excellent: 3}
   enum priority: {low: 0, normal: 1, high: 2}
