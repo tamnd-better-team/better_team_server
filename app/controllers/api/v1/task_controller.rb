@@ -1,5 +1,5 @@
 class Api::V1::TaskController < ApplicationController
-  # include Api::V1::TaskService
+  include ActionView::Helpers::DateHelper
 
   before_action :get_current_user
 
@@ -89,7 +89,6 @@ class Api::V1::TaskController < ApplicationController
     workspace_id = params[:workspace_id]
     search_text = params[:search_text].presence || ""
     workspace = Workspace.find_by(id: workspace_id)
-    # limit_task = params[:page].to_i * Task::LIMIT_TASK_PER_PAGE
 
     if workspace && can_access_task?(workspace, @current_user)
       result = get_workspace_task_by_status(workspace, "pending", params[:page], search_text)
@@ -114,7 +113,6 @@ class Api::V1::TaskController < ApplicationController
     workspace_id = params[:workspace_id]
     search_text = params[:search_text].presence || ""
     workspace = Workspace.find_by(id: workspace_id)
-    # limit_task = params[:page].to_i * Task::LIMIT_TASK_PER_PAGE
 
     if workspace && can_access_task?(workspace, @current_user)
       result = get_workspace_task_by_status(workspace, "in_progress", params[:page], search_text)
@@ -139,7 +137,6 @@ class Api::V1::TaskController < ApplicationController
     workspace_id = params[:workspace_id]
     search_text = params[:search_text].presence || ""
     workspace = Workspace.find_by(id: workspace_id)
-    # limit_task = params[:page].to_i * Task::LIMIT_TASK_PER_PAGE
 
     if workspace && can_access_task?(workspace, @current_user)
       result = get_workspace_task_by_status(workspace, "finished", params[:page], search_text)
@@ -215,6 +212,9 @@ class Api::V1::TaskController < ApplicationController
         when "priority"
           value_before = Task::PRIORITY_CD[history.value_before.to_sym]
           value_after = Task::PRIORITY_CD[history.value_after.to_sym]
+        when "percentage_completed"
+          value_before = history.value_before + "%"
+          value_after = history.value_after + "%"
         else
           value_before = history.value_before
           value_after = history.value_after
@@ -229,7 +229,7 @@ class Api::V1::TaskController < ApplicationController
 
       task_histories.push({
         updated_by: user.get_full_name,
-        updated_at: histories_at_updated_time.first.created_at,
+        updated_at: time_ago_in_words(histories_at_updated_time.first.created_at),
         histories: histories
       })
     end

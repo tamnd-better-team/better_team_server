@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   devise_for :users
   
   namespace :api, defaults: {format: :json} do
-    namespace :v1 do 
+    namespace :v1 do
+      mount ActionCable.server => '/cable'
+
       devise_scope :user do
         post "sign_up", to: "registrations#create"
         post "sign_in", to: "sessions#create"
@@ -32,6 +34,10 @@ Rails.application.routes.draw do
       get "workspace/:workspace_id/finished_tasks_list", to: "task#finished_tasks_list"
       get "task/:task_id/detail", to: "task#detail"
       get "task/:task_id/task_history", to: "task#task_history"
+
+      # Comment
+      post "task/:task_id/comment", to: "task_comment#create"
+      get "task/:task_id/comments", to: "task_comment#comments"
     end
   end
 end

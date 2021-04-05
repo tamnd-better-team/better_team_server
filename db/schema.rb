@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_03_163914) do
+ActiveRecord::Schema.define(version: 2021_04_04_035131) do
 
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
     t.string "content"
@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(version: 2021_04_03_163914) do
     t.integer "user_id"
     t.integer "task_id"
     t.string "field"
-    t.string "value_before"
-    t.string "value_after"
+    t.string "value_before", limit: 5000
+    t.string "value_after", limit: 5000
     t.datetime "created_at"
   end
 
