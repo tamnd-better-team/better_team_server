@@ -10,37 +10,42 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_04_035131) do
+ActiveRecord::Schema.define(version: 2021_04_10_043706) do
 
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
     t.string "content"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id"
-    t.integer "workspace_id"
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "task_comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
     t.string "content"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "task_id"
-    t.integer "user_id"
+    t.bigint "user_id", null: false
+    t.bigint "task_id", null: false
+    t.index ["task_id"], name: "index_task_comments_on_task_id"
+    t.index ["user_id"], name: "index_task_comments_on_user_id"
   end
 
   create_table "task_histories", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "task_id"
     t.string "field"
     t.string "value_before", limit: 5000
     t.string "value_after", limit: 5000
     t.datetime "created_at"
+    t.bigint "user_id", null: false
+    t.bigint "task_id", null: false
+    t.index ["task_id"], name: "index_task_histories_on_task_id"
+    t.index ["user_id"], name: "index_task_histories_on_user_id"
   end
 
   create_table "task_labels", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
-    t.integer "task_id"
     t.string "color"
     t.string "text"
+    t.bigint "task_id", null: false
+    t.index ["task_id"], name: "index_task_labels_on_task_id"
   end
 
   create_table "tasks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
@@ -54,10 +59,13 @@ ActiveRecord::Schema.define(version: 2021_04_04_035131) do
     t.integer "percentage_completed", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "workspace_id"
     t.integer "created_user_id"
     t.integer "assigned_user_id"
     t.string "label"
+    t.bigint "user_id", null: false
+    t.bigint "workspace_id", null: false
+    t.index ["user_id"], name: "index_tasks_on_user_id"
+    t.index ["workspace_id"], name: "index_tasks_on_workspace_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
@@ -87,9 +95,11 @@ ActiveRecord::Schema.define(version: 2021_04_04_035131) do
     t.integer "role", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "workspace_id"
-    t.integer "user_id"
     t.integer "status", default: 0
+    t.bigint "user_id", null: false
+    t.bigint "workspace_id", null: false
+    t.index ["user_id"], name: "index_workspace_members_on_user_id"
+    t.index ["workspace_id"], name: "index_workspace_members_on_workspace_id"
   end
 
   create_table "workspaces", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
@@ -102,4 +112,14 @@ ActiveRecord::Schema.define(version: 2021_04_04_035131) do
     t.string "code"
   end
 
+  add_foreign_key "messages", "users"
+  add_foreign_key "task_comments", "tasks"
+  add_foreign_key "task_comments", "users"
+  add_foreign_key "task_histories", "tasks"
+  add_foreign_key "task_histories", "users"
+  add_foreign_key "task_labels", "tasks"
+  add_foreign_key "tasks", "users"
+  add_foreign_key "tasks", "workspaces"
+  add_foreign_key "workspace_members", "users"
+  add_foreign_key "workspace_members", "workspaces"
 end
