@@ -10,18 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_10_043706) do
+ActiveRecord::Schema.define(version: 2021_04_13_151550) do
 
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
-    t.string "content"
+    t.string "content", limit: 5000
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
+    t.bigint "workspace_id", null: false
     t.index ["user_id"], name: "index_messages_on_user_id"
+    t.index ["workspace_id"], name: "index_messages_on_workspace_id"
   end
 
   create_table "task_comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci", force: :cascade do |t|
-    t.string "content"
+    t.string "content", limit: 5000
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
@@ -62,9 +64,7 @@ ActiveRecord::Schema.define(version: 2021_04_10_043706) do
     t.integer "created_user_id"
     t.integer "assigned_user_id"
     t.string "label"
-    t.bigint "user_id", null: false
     t.bigint "workspace_id", null: false
-    t.index ["user_id"], name: "index_tasks_on_user_id"
     t.index ["workspace_id"], name: "index_tasks_on_workspace_id"
   end
 
@@ -113,12 +113,12 @@ ActiveRecord::Schema.define(version: 2021_04_10_043706) do
   end
 
   add_foreign_key "messages", "users"
+  add_foreign_key "messages", "workspaces"
   add_foreign_key "task_comments", "tasks"
   add_foreign_key "task_comments", "users"
   add_foreign_key "task_histories", "tasks"
   add_foreign_key "task_histories", "users"
   add_foreign_key "task_labels", "tasks"
-  add_foreign_key "tasks", "users"
   add_foreign_key "tasks", "workspaces"
   add_foreign_key "workspace_members", "users"
   add_foreign_key "workspace_members", "workspaces"

@@ -245,17 +245,6 @@ class Api::V1::TaskController < ApplicationController
     params.permit Task::TASK_PARAMS
   end
 
-  def get_current_user
-    auth_token = request.headers["auth-token"]
-    @current_user = User.find_by(authentication_token: auth_token)
-    unless @current_user
-      render json: {
-        messages: "You are not authorized to access this resource.",
-        is_success: false
-      }, status: :ok
-    end
-  end
-
   def can_access_task? workspace, user
     workspace_member = WorkspaceMember.approved.by_user_workspace(user.id, workspace.id)
     return workspace_member.present?

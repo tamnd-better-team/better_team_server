@@ -38,6 +38,10 @@ Rails.application.routes.draw do
       # Comment
       post "task/:task_id/comment", to: "task_comment#create"
       get "task/:task_id/comments", to: "task_comment#comments"
+
+      # Message
+      post "workspace/:workspace_id/message", to: "message#create"
+      get "workspace/:workspace_id/messages", to: "message#messages"
     end
   end
 end

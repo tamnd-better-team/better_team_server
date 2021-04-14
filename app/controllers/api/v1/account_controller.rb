@@ -40,11 +40,6 @@ class Api::V1::AccountController < ApplicationController
   end
 
   private
-  def get_current_user
-    auth_token = request.headers["auth-token"]
-    @current_user = User.find_by(authentication_token: auth_token)
-  end
-
   def user_params
     params.permit User::USERS_PARAMS
   end
