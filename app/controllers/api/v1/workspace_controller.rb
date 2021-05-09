@@ -1,4 +1,5 @@
 class Api::V1::WorkspaceController < ApplicationController
+  include ActionView::Helpers::TextHelper
   before_action :get_current_user
 
   def create
@@ -47,10 +48,23 @@ class Api::V1::WorkspaceController < ApplicationController
 
   def show
     workspace = Workspace.find_by(id: params[:id])
-    if workspace && can_read_workspace_info?(workspace, @current_user)
+    belong_workspace = false
+    if workspace
+      if WorkspaceMember.find_by(workspace_id: workspace.id, user_id: @current_user.id)
+        belong_workspace = true
+      end
+      workspace_info = {
+        id: workspace.id,
+        title: workspace.title,
+        description: workspace.description,
+        is_private: workspace.is_private,
+        belong_workspace: belong_workspace,
+        code: workspace.code
+      }
+
       render json: {
         is_success: true,
-        workspace: workspace
+        workspace: workspace_info
       }, status: :ok
     else
       render json: {
@@ -210,6 +224,77 @@ class Api::V1::WorkspaceController < ApplicationController
         message: "You can not access this recources!"
       }, status: :ok
     end
+  end
+
+  def leave_workspace
+    workspace_id = params[:workspace_id]
+    workspace_member = WorkspaceMember.find_by(user_id: @current_user.id, workspace_id: workspace_id)
+    if workspace_member
+      workspace_member.destroy
+      render json: {
+        is_success: true
+      }, status: :ok
+    else
+      render json: {
+        is_success: false,
+        message: "You do not belong to this workspace."
+      }, status: :ok
+    end
+  end
+
+  def all_workspaces
+    search_key = params[:search_key].presence || ""
+    workspaces = []
+
+    Workspace.where("title LIKE :text", text: "%#{search_key}%").each do |workspace|
+      belong_workspace = false
+      if WorkspaceMember.find_by(workspace_id: workspace.id, user_id: @current_user.id)
+        belong_workspace = true
+      end
+
+      workspaces.push({
+        id: workspace.id,
+        title: workspace.title,
+        description: truncate(workspace.description, length: 50),
+        is_private: workspace.is_private,
+        belong_workspace: belong_workspace
+      })
+    end
+
+    render json: {
+      is_success: true,
+      workspaces: workspaces
+    }, status: :ok
+  end
+
+  def join
+    code = params[:code]
+    is_success = true
+    message = ""
+
+    workspace = Workspace.find_by(id: params[:workspace_id])
+    workspace_member = WorkspaceMember.find_by(user_id: @current_user.id, workspace_id: params[:workspace_id])
+
+    if workspace_member.present?
+      is_success = false
+      message = "You already belong to this workspace!"
+    elsif workspace.code.blank? || code == workspace.code
+      if WorkspaceMember.create(user_id: @current_user.id, workspace_id: params[:workspace_id])
+        is_success = true
+        message = "Successfully"
+      else
+        is_success = false
+        message = "Can not join to this workspace!"
+      end
+    else
+      is_success = false
+      message = "Private key is incorrect!"
+    end
+
+    render json: {
+      is_success: is_success,
+      message: message
+    }, status: :ok
   end
 
   private
