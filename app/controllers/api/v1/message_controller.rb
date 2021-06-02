@@ -19,6 +19,19 @@ class Api::V1::MessageController < ApplicationController
     end
   end
 
+  def create_reply_message
+    workspace_id = params[:workspace_id]
+    reply_message = ReplyMessage.new(
+      content: params[:content],
+      message_id: params[:message_id],
+      user_id: @current_user.id
+    )
+    if reply_message.save
+      messages = get_messages(workspace_id)
+      ActionCable.server.broadcast "message_channel_#{workspace_id}", { data: messages }
+    end
+  end
+
   def messages
     workspace_id = params[:workspace_id]
     workspace_member = WorkspaceMember.find_by(user_id: @current_user.id, workspace_id: workspace_id)
@@ -45,12 +58,37 @@ class Api::V1::MessageController < ApplicationController
     workspace = Workspace.find_by(id: workspace_id)
     messages = []
     workspace.messages.each do |message|
+      reply_messages = []
+      message.reply_messages.each do |reply_message|
+        reply_messages.push({
+          id: reply_message.id,
+          content: reply_message.content,
+          time: time_ago_in_words(reply_message.created_at),
+          user_name: reply_message.user.get_full_name
+        })
+      end
+
       messages.push({
+        id: message.id,
         content: message.content,
         time: time_ago_in_words(message.created_at),
-        user_name: message.user.get_full_name
+        user_name: message.user.get_full_name,
+        reply_messages: reply_messages
       })
     end
     messages
+  end
+
+  def get_reply_messages message_id
+    message = Message.find_by(id: message_id)
+    reply_messages = []
+    message.reply_messages.each do |reply_message|
+      reply_messages.push({
+        id: reply_message.id,
+        content: reply_message.content,
+        time: time_ago_in_words(reply_message.created_at),
+        user_name: reply_message.user.get_full_name
+      })
+    end
   end
 end

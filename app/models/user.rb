@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :workspace_members
   has_many :workspaces, through: :workspace_members
   has_many :task_history
+  has_many :reply_messages
 
   validates :first_name, presence: true,
     length: {maximum: 20}

@@ -45,6 +45,7 @@ Rails.application.routes.draw do
       # Message
       post "workspace/:workspace_id/message", to: "message#create"
       get "workspace/:workspace_id/messages", to: "message#messages"
+      post "workspace/:workspace_id/create_reply_message", to: "message#create_reply_message"
     end
   end
 end
