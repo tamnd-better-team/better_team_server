@@ -46,6 +46,12 @@ Rails.application.routes.draw do
       post "workspace/:workspace_id/message", to: "message#create"
       get "workspace/:workspace_id/messages", to: "message#messages"
       post "workspace/:workspace_id/create_reply_message", to: "message#create_reply_message"
+
+      # Dashboard
+      get "dashboard/count_task_user", to: "dashboard#count_task_user"
+      get "dashboard/caculate_percent_task_changed", to: "dashboard#caculate_percent_task_changed"
+      get "dashboard/get_recent_tasks", to: "dashboard#get_recent_tasks"
+      get "dashboard/get_recent_messages", to: "dashboard#get_recent_messages"
     end
   end
 end

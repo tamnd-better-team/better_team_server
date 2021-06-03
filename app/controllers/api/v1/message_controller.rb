@@ -78,17 +78,4 @@ class Api::V1::MessageController < ApplicationController
     end
     messages
   end
-
-  def get_reply_messages message_id
-    message = Message.find_by(id: message_id)
-    reply_messages = []
-    message.reply_messages.each do |reply_message|
-      reply_messages.push({
-        id: reply_message.id,
-        content: reply_message.content,
-        time: time_ago_in_words(reply_message.created_at),
-        user_name: reply_message.user.get_full_name
-      })
-    end
-  end
 end
